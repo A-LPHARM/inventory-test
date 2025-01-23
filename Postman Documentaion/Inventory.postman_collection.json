@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "b84ff5d6-55a7-4840-bf21-576f104dc979",
+		"name": "Inventory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25621903",
+		"_collection_link": "https://vxt-tech.postman.co/workspace/Team-Workspace~408fe848-6776-4f75-8259-432d5c978f91/collection/25621903-b84ff5d6-55a7-4840-bf21-576f104dc979?action=share&source=collection_link&creator=25621903"
+	},
+	"item": [
+		{
+			"name": "Create Inventory Item",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Spaghetti\",\r\n    \"description\":\"Indian made spaghtetti\",\r\n    \"stockQuantity\": 40,\r\n    \"price\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/inventory/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"inventory",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Inventory Item Total Stock",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"stockQuantity\":408, \"price\": 10000}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/inventory/items/67923c02b9db838da9d178f6/stock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"inventory",
+						"items",
+						"67923c02b9db838da9d178f6",
+						"stock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Inventory Item",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/inventory/items/67923c02b9db838da9d178f6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"inventory",
+						"items",
+						"67923c02b9db838da9d178f6"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

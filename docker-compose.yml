@@ -1,0 +1,40 @@
+version: "3.8"
+
+networks:
+  inventory-test:
+
+services:
+  inventory-service:
+    build:
+      context: ./inventory-service
+      dockerfile: Dockerfile
+    networks:
+      - inventory-test
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://root:passVerify@mongo:27017/inventory?authSource=admin
+      - RABBITMQ_URI=amqp://guest:guest@rabbitmq:5672
+      - ELASTICSEARCH_HOST=http://elastic:elasticpassword@elasticsearch:9200
+      - PORT=3000
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    networks:
+      - inventory-test
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: passVerify
+      MONGO_INITDB_DATABASE: inventory
+    ports:
+      - "27017:27017"
+    restart: always
+
+volumes:
+  mongo-data:
+    driver: local
+  es-data:
+    driver: local
