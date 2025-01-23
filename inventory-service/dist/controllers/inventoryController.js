@@ -39,12 +39,15 @@ export const updateInventoryStock = (req, res) => __awaiter(void 0, void 0, void
         logger.error(error);
     }
 });
-export const getInventoryItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+export const getInventoryItem = async (req, res) => {
     try {
-        const item = yield getItem(req.params.itemId);
-        res.json(item);
-    }
-    catch (error) {
+        const item = await getItem(req.params.itemId);
+        if (!item) {
+            return res.status(404).json({ message: "Item not found" });
+        }
+        res.json({ item, stockQuantity: item.stockQuantity });
+    } catch (error) {
         logger.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-});
+};
