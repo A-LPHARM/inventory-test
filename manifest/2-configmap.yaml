@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backup-cron
+data:
+  backup.sh: |
+    #!/bin/bash
+    set -e
+
+    # MongoDB credentials
+    MONGO_HOST="mongo"
+    MONGO_PORT="27017"
+    MONGO_USER="root"
+    MONGO_PASSWORD="passVerify"
+    MONGO_AUTH_DB="admin"  
+    BACKUP_PATH="/backup/mongo-$(date +%F-%H-%M-%S).gz"
+    S3_BUCKET="s3://inventoryservice5636"
+
+    mkdir -p /backup
+
+    # Export MongoDB database
+    mongodump --host "$MONGO_HOST" --port "$MONGO_PORT" \
+    --username "$MONGO_USER" --password "$MONGO_PASSWORD" \
+    --authenticationDatabase "$MONGO_AUTH_DB" --db="inventory" --gzip --archive="$BACKUP_PATH"
+
+    # Upload backup to S3
+    aws s3 cp "$BACKUP_PATH" "$S3_BUCKET/"
+
+    echo "Backup completed successfully."

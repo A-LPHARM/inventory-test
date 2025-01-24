@@ -10,4 +10,13 @@ managedNodeGroups:
     instanceType: t3.medium
     desiredCapacity: 2
 
+addons:
+  - name: aws-ebs-csi-driver
+    version: latest
+  - name: eks-pod-identity-agent
+    version: latest
+
+addonsConfig:    
+   autoApplyPodIdentityAssociations: true
+
 

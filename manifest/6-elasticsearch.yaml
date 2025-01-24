@@ -12,6 +12,7 @@ spec:
       labels:
         app: elasticsearch
     spec:
+      restartPolicy: Always 
       containers:
       - name: elasticsearch
         image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
@@ -25,7 +26,10 @@ spec:
         volumeMounts:
         - mountPath: /usr/share/elasticsearch/data
           name: es-data
-        restartPolicy: Always
+      volumes:
+      - name: es-data
+        emptyDir: {}  # Change this if you want persistent storage
+
 ---
 apiVersion: v1
 kind: Service

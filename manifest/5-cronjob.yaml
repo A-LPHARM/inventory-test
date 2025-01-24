@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mongo-backup
+spec:
+  schedule: "*/3 * * * *"  # Run every day at 2am
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: mongo-backup
+              image: mongo:6.0
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  apt-get update && apt-get install -y awscli
+                  /scripts/backup.sh
+              volumeMounts:
+                - name: backup-script
+                  mountPath: /scripts
+          volumes:
+            - name: backup-script
+              configMap:
+                name: backup-cron
+                defaultMode: 0777  # Ensure execution permissions
+          restartPolicy: OnFailure    

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: inventory-service
-        image: <your-docker-image> # Replace with your image name or build it before
+        image: henriksin1/inventory-test_inventory-service:latest # Replace with your image name or build it before
         ports:
         - containerPort: 3000
         env:
@@ -27,6 +27,20 @@ spec:
         - name: PORT
           value: "3000"
         imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        readinessProbe:
+          httpGet:
+            path: /health  # Adjust to your actual health check endpoint
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: v1
 kind: Service
@@ -39,4 +53,4 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-  type: NodePort
+  type: LoadBalancer
