@@ -1,0 +1,57 @@
+name: inventory-test-ci-deployment
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  id-token: write   
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: install kubectl
+      uses: azure/setup-kubectl@v4
+      with:
+        version: 'v1.24.0' # default is latest stable
+      id: install
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Build and push
+      uses: docker/build-push-action@v6
+      with:
+        context: inventory-service/.
+        file: inventory-service/Dockerfile
+        push: true
+        tags: henriksin1/inventory-test_inventory-service:latest
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+        role-to-assume: arn:aws:iam::471112673321:role/inventorydeploy
+        role-session-name: deploy
+        aws-region: us-east-1
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f manifest/1-serviceaccount.yaml
+        kubectl apply -f manifest/2-configmap.yaml
+        kubectl apply -f manifest/3-persistentstorage.yaml
+        kubectl apply -f manifest/4-mongodb.yaml
+        kubectl apply -f manifest/5-cronjob.yaml
+        kubectl apply -f manifest/6-elasticsearch.yaml
+        kubectl apply -f manifest/7-rabbitmq.yaml
+        kubectl apply -f manifest/8-inventory-service.yaml
+  
