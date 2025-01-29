@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: inventory-service
-        image: henriksin1/inventory-test_inventory-service:latest # Replace with your image name or build it before
+        image: henriksin1/inventory-test_inventory-service:latest 
         ports:
         - containerPort: 3000
         env:
@@ -35,8 +35,7 @@ spec:
             memory: "1Gi"
             cpu: "1"
         readinessProbe:
-          httpGet:
-            path: /health  # Adjust to your actual health check endpoint
+          tcpSocket:
             port: 3000
           initialDelaySeconds: 5
           periodSeconds: 5
