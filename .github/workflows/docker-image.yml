@@ -16,11 +16,15 @@ jobs:
       - name: Request OIDC Token
         id: oidc-token
         run: |
-          echo "TOKEN=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-          "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r '.value')" >> $GITHUB_ENV
+          echo "TOKEN=$(curl -H 'Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN' \
+          \"$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com\" | jq -r '.value')" >> $GITHUB_ENV
 
       - name: Save Token to File
         run: echo "$TOKEN" > github-oidc-token.txt
 
-      - name: Display Token (for debugging)
-        run: cat github-oidc-token.txt
+      - name: Upload Token Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: oidc-token
+          path: github-oidc-token.txt
+          retention-days: 1
