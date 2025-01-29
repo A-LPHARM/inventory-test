@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: github-actions-role
+  namespace: default
+rules:
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["create", "get", "list", "update", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: github-actions-rolebinding
+  namespace: default
+subjects:
+  - kind: User
+    name: arn:aws:sts::471112673321:assumed-role/inventorydeploy/github-actions
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: github-actions-role
+  apiGroup: rbac.authorization.k8s.io
