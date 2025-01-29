@@ -42,7 +42,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
         role-to-assume: arn:aws:iam::471112673321:role/inventorydeploy
-        role-session-name: deploy
+        role-session-name: github-actions
         aws-region: us-east-1
     - name: Deploy to Kubernetes
       run: |
