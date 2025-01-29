@@ -51,18 +51,15 @@ jobs:
     - name: Verify Kubernetes Access
       run: |
         aws sts get-caller-identity
-        aws eks --region us-east-1 update-kubeconfig --name cluster-test
-        kubectl config view --minify
-        kubectl auth can-i list pods --all-namespaces
-    
-    - name: Deploy to Kubernetes
-      run: |
-        kubectl apply -f manifest/1-serviceaccount.yaml
-        kubectl apply -f manifest/2-configmap.yaml
-        kubectl apply -f manifest/3-persistentstorage.yaml
-        kubectl apply -f manifest/4-mongodb.yaml
-        kubectl apply -f manifest/5-cronjob.yaml
-        kubectl apply -f manifest/6-elasticsearch.yaml
-        kubectl apply -f manifest/7-rabbitmq.yaml
-        kubectl apply -f manifest/8-inventory-service.yaml
+      
+    # - name: Deploy to Kubernetes
+    #   run: |
+    #     kubectl apply -f manifest/1-serviceaccount.yaml
+    #     kubectl apply -f manifest/2-configmap.yaml
+    #     kubectl apply -f manifest/3-persistentstorage.yaml
+    #     kubectl apply -f manifest/4-mongodb.yaml
+    #     kubectl apply -f manifest/5-cronjob.yaml
+    #     kubectl apply -f manifest/6-elasticsearch.yaml
+    #     kubectl apply -f manifest/7-rabbitmq.yaml
+    #     kubectl apply -f manifest/8-inventory-service.yaml
   
