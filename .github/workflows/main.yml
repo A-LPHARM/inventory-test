@@ -48,9 +48,15 @@ jobs:
     - name: update kube config
       run: aws eks --region us-east-1 update-kubeconfig --name cluster-test
 
+    - name: Verify Kubernetes Access
+      run: |
+        aws sts get-caller-identity
+        aws eks --region us-east-1 update-kubeconfig --name cluster-test
+        kubectl config view --minify
+        kubectl auth can-i list pods --all-namespaces
+    
     - name: Deploy to Kubernetes
       run: |
-        kubectl get nodes
         kubectl apply -f manifest/1-serviceaccount.yaml
         kubectl apply -f manifest/2-configmap.yaml
         kubectl apply -f manifest/3-persistentstorage.yaml
