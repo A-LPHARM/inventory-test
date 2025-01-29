@@ -45,21 +45,21 @@ jobs:
         role-session-name: github-actions
         aws-region: us-east-1
     
-    - name: update kube config
-      run: aws eks --region us-east-1 update-kubeconfig --name cluster-test
-
     - name: Verify Kubernetes Access
       run: |
         aws sts get-caller-identity
+    
+    - name: update kube config
+      run: aws eks --region us-east-1 update-kubeconfig --name cluster-test
       
-    # - name: Deploy to Kubernetes
-    #   run: |
-    #     kubectl apply -f manifest/1-serviceaccount.yaml
-    #     kubectl apply -f manifest/2-configmap.yaml
-    #     kubectl apply -f manifest/3-persistentstorage.yaml
-    #     kubectl apply -f manifest/4-mongodb.yaml
-    #     kubectl apply -f manifest/5-cronjob.yaml
-    #     kubectl apply -f manifest/6-elasticsearch.yaml
-    #     kubectl apply -f manifest/7-rabbitmq.yaml
-    #     kubectl apply -f manifest/8-inventory-service.yaml
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f manifest/1-serviceaccount.yaml
+        kubectl apply -f manifest/2-configmap.yaml
+        kubectl apply -f manifest/3-persistentstorage.yaml
+        kubectl apply -f manifest/4-mongodb.yaml
+        kubectl apply -f manifest/5-cronjob.yaml
+        kubectl apply -f manifest/6-elasticsearch.yaml
+        kubectl apply -f manifest/7-rabbitmq.yaml
+        kubectl apply -f manifest/8-inventory-service.yaml
   
