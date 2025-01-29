@@ -39,11 +39,15 @@ jobs:
         tags: henriksin1/inventory-test_inventory-service:latest
 
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1.7.0
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::471112673321:role/inventorydeploy
         role-session-name: github-actions
         aws-region: us-east-1
+    
+    - name: update kube config
+      run: aws eks --region us-east-1 update-kubeconfig --name cluster-test
+
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f manifest/1-serviceaccount.yaml
