@@ -50,6 +50,7 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
+        kubectl get nodes
         kubectl apply -f manifest/1-serviceaccount.yaml
         kubectl apply -f manifest/2-configmap.yaml
         kubectl apply -f manifest/3-persistentstorage.yaml
